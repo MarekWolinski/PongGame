@@ -1,0 +1,129 @@
+[gd_scene load_steps=11 format=3 uid="uid://bngv16y55kgjn"]
+
+[ext_resource type="PackedScene" uid="uid://dgdj3yknq3rdf" path="res://Player/Player.tscn" id="1_7wlic"]
+[ext_resource type="Script" path="res://Level/level.gd" id="1_j6cow"]
+[ext_resource type="PackedScene" uid="uid://bkddpnegerp8d" path="res://Ball/ball.tscn" id="1_mt2iu"]
+[ext_resource type="PackedScene" uid="uid://pd4yjtlpl43f" path="res://Oponent/Oponent.tscn" id="2_ij1tk"]
+[ext_resource type="AudioStream" uid="uid://b64tcrvohqrdc" path="res://Assets/ping_pong_8bit_plop.ogg" id="5_tpfos"]
+
+[sub_resource type="SystemFont" id="SystemFont_0d1j7"]
+
+[sub_resource type="SystemFont" id="SystemFont_1cqsn"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_om2ad"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7kwhy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l7raa"]
+size = Vector2(91, 707.5)
+
+[node name="Level" type="Node"]
+script = ExtResource("1_j6cow")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.129412, 0.14902, 1)
+
+[node name="PlayerScore" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_right = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.156863, 0.576471, 0.792157, 1)
+theme_override_fonts/font = SubResource("SystemFont_0d1j7")
+theme_override_font_sizes/font_size = 50
+text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentScore" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.156863, 0.576471, 0.792157, 1)
+theme_override_fonts/font = SubResource("SystemFont_1cqsn")
+theme_override_font_sizes/font_size = 50
+text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CountdownLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.847059, 0.290196, 0.160784, 1)
+theme_override_fonts/font = SubResource("SystemFont_1cqsn")
+theme_override_font_sizes/font_size = 50
+text = "Countdown"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ball" parent="." instance=ExtResource("1_mt2iu")]
+position = Vector2(640, 360)
+
+[node name="Player" parent="." instance=ExtResource("1_7wlic")]
+position = Vector2(35, 360)
+
+[node name="Oponent" parent="." instance=ExtResource("2_ij1tk")]
+position = Vector2(1245, 360)
+
+[node name="WallTop" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
+visible = false
+shape = SubResource("WorldBoundaryShape2D_om2ad")
+
+[node name="WallBottom" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom"]
+position = Vector2(0, 720)
+shape = SubResource("WorldBoundaryShape2D_7kwhy")
+
+[node name="Left" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+position = Vector2(-47, 359)
+shape = SubResource("RectangleShape2D_l7raa")
+
+[node name="Right" type="Area2D" parent="."]
+position = Vector2(1372, 0)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+position = Vector2(-47, 359)
+shape = SubResource("RectangleShape2D_l7raa")
+
+[node name="CountdownTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="ScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_tpfos")
+
+[connection signal="body_entered" from="Left" to="." method="_on_left_body_entered"]
+[connection signal="body_entered" from="Right" to="." method="_on_right_body_entered"]
+[connection signal="timeout" from="CountdownTimer" to="." method="_on_countdown_timer_timeout"]

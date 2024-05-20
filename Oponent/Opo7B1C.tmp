@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://pd4yjtlpl43f"]
+
+[ext_resource type="Script" path="res://Oponent/Oponent.gd" id="1_ifj64"]
+[ext_resource type="Texture2D" uid="uid://cld6tu72j2fn2" path="res://Assets/Paddle.png" id="2_me7wu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66cma"]
+size = Vector2(28, 120)
+
+[node name="Oponent" type="CharacterBody2D"]
+script = ExtResource("1_ifj64")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_me7wu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_66cma")
